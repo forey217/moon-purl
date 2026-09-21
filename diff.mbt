@@ -1,18 +1,10 @@
 ///|
-fn contains_string(values : Array[String], expected : String) -> Bool {
-  for value in values {
-    if value == expected {
-      return true
-    }
-  }
-  false
-}
-
-///|
 fn sorted_unique(values : Array[String]) -> Array[String] {
   let out : Array[String] = []
+  let seen : @hashset.HashSet[String] = @hashset.HashSet([])
   for value in values {
-    if !contains_string(out, value) {
+    if !seen.contains(value) {
+      seen.add(value)
       out.push(value)
     }
   }
@@ -46,18 +38,20 @@ pub fn diff_inventory(
 ) -> InventoryDelta {
   let (old_values, invalid_before) = snapshot_identities(before)
   let (new_values, invalid_after) = snapshot_identities(after)
+  let old_set : @hashset.HashSet[String] = @hashset.HashSet(old_values)
+  let new_set : @hashset.HashSet[String] = @hashset.HashSet(new_values)
   let added : Array[String] = []
   let removed : Array[String] = []
   let unchanged : Array[String] = []
   for value in old_values {
-    if contains_string(new_values, value) {
+    if new_set.contains(value) {
       unchanged.push(value)
     } else {
       removed.push(value)
     }
   }
   for value in new_values {
-    if !contains_string(old_values, value) {
+    if !old_set.contains(value) {
       added.push(value)
     }
   }

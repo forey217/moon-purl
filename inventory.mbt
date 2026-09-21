@@ -40,16 +40,6 @@ fn inventory_finding(
 }
 
 ///|
-fn seen_identity(values : Array[String], expected : String) -> Bool {
-  for value in values {
-    if value == expected {
-      return true
-    }
-  }
-  false
-}
-
-///|
 /// Audit a structured PURL inventory without network access. Every input row
 /// produces one finding. Duplicate means the same type/namespace/name/version
 /// appeared earlier; qualifiers and subpath are excluded from that key, so the
@@ -59,7 +49,7 @@ pub fn audit_inventory(
   policy? : InventoryPolicy = InventoryPolicy::default(),
 ) -> InventoryReport {
   let findings : Array[InventoryFinding] = []
-  let identities : Array[String] = []
+  let identities : @hashset.HashSet[String] = @hashset.HashSet([])
   let mut ready = 0
   let mut invalid = 0
   let mut unversioned = 0
@@ -99,7 +89,7 @@ pub fn audit_inventory(
           )
         }
         None =>
-          if seen_identity(identities, identity) {
+          if identities.contains(identity) {
             duplicate += 1
             inventory_finding(
               entry,
@@ -114,7 +104,7 @@ pub fn audit_inventory(
           }
       }
     }
-    identities.push(identity)
+    identities.add(identity)
     findings.push(finding)
   }
   { findings, ready, invalid, unversioned, duplicate, policy_blocked, }
