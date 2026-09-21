@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+moon fmt --check
+moon check --target js --deny-warn
+moon test --target js
