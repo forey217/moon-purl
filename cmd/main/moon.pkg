@@ -1,0 +1,5 @@
+import {
+  "forey217/moon_purl" @lib,
+}
+
+pkgtype(kind: "executable")
