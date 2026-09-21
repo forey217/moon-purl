@@ -81,18 +81,9 @@ fn qualifier_index(values : Array[Qualifier], key : String) -> Int {
 fn sort_qualifiers(values : Array[Qualifier]) -> Array[Qualifier] {
   let out : Array[Qualifier] = []
   for value in values {
-    let mut inserted = false
-    for i = 0; i < out.length(); i = i + 1 {
-      if value.key < out[i].key {
-        out.insert(i, value)
-        inserted = true
-        break
-      }
-    }
-    if !inserted {
-      out.push(value)
-    }
+    out.push(value)
   }
+  out.sort_by(fn(a, b) { String::lexical_compare(a.key, b.key) })
   out
 }
 
