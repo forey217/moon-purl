@@ -1,0 +1,131 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "forey217/moon_purl"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn audit_inventory(Array[InventoryEntry], policy? : InventoryPolicy) -> InventoryReport
+
+pub fn canonicalize(String) -> String raise PurlError
+
+pub fn diagnose_batch(Array[String]) -> ParseReport
+
+pub fn diff_inventory(Array[InventoryEntry], Array[InventoryEntry]) -> InventoryDelta
+
+pub fn match_purl(PackageUrl, PurlPattern) -> MatchResult
+
+pub fn matches(PackageUrl, PurlPattern) -> Bool
+
+pub fn parse(String) -> PackageUrl raise PurlError
+
+pub fn same_package_version(PackageUrl, PackageUrl) -> Bool
+
+// Errors
+pub(all) suberror PurlError {
+  Syntax(String, Int)
+  Unsupported(String, Int)
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub(all) enum InventoryDecision {
+  Ready
+  Invalid
+  Unversioned
+  Duplicate
+  PolicyBlocked
+} derive(Eq, @debug.Debug)
+pub fn InventoryDecision::to_string(Self) -> String
+
+pub(all) struct InventoryDelta {
+  added : Array[String]
+  removed : Array[String]
+  unchanged : Array[String]
+  invalid_before : Int
+  invalid_after : Int
+} derive(Eq, @debug.Debug)
+
+pub(all) struct InventoryEntry {
+  record_id : String
+  purl : String
+} derive(Eq, @debug.Debug)
+
+pub(all) struct InventoryFinding {
+  record_id : String
+  input : String
+  canonical : String
+  decision : InventoryDecision
+  code : String
+  offset : Int
+} derive(Eq, @debug.Debug)
+
+pub(all) struct InventoryPolicy {
+  require_version : Bool
+  blocked_types : Array[String]
+  required_qualifiers : Array[Qualifier]
+} derive(Eq, @debug.Debug)
+pub fn InventoryPolicy::default() -> Self
+
+pub(all) struct InventoryReport {
+  findings : Array[InventoryFinding]
+  ready : Int
+  invalid : Int
+  unversioned : Int
+  duplicate : Int
+  policy_blocked : Int
+} derive(Eq, @debug.Debug)
+
+pub(all) enum MatchResult {
+  Match
+  TypeMismatch
+  NamespaceMismatch
+  NameMismatch
+  VersionMismatch
+  QualifierMismatch(String)
+} derive(Eq, @debug.Debug)
+
+pub(all) struct PackageUrl {
+  package_type : String
+  namespace_parts : Array[String]
+  name : String
+  version : String?
+  qualifiers : Array[Qualifier]
+  subpath : Array[String]
+} derive(Eq, @debug.Debug)
+pub fn PackageUrl::identity(Self) -> String
+pub fn PackageUrl::qualifier(Self, String) -> String?
+pub fn PackageUrl::to_string(Self) -> String
+
+pub(all) struct ParseFinding {
+  index : Int
+  input : String
+  canonical : String
+  valid : Bool
+  code : String
+  offset : Int
+} derive(Eq, @debug.Debug)
+
+pub(all) struct ParseReport {
+  findings : Array[ParseFinding]
+  valid : Int
+  invalid : Int
+} derive(Eq, @debug.Debug)
+
+pub(all) struct PurlPattern {
+  package_type : String?
+  namespace_parts : Array[String]?
+  name : String?
+  version : String?
+  qualifiers : Array[Qualifier]
+} derive(Eq, @debug.Debug)
+pub fn PurlPattern::any() -> Self
+
+pub(all) struct Qualifier {
+  key : String
+  value : String
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
