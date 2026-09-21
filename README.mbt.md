@@ -40,7 +40,7 @@ test {
 }
 ```
 
-After the package is available from MoonCakes:
+Install the published package from MoonCakes:
 
 ```powershell
 moon add forey217/moon_purl
@@ -103,7 +103,8 @@ counts, timings, environment, and interpretation.
 - PURL profile rules beyond the named ecosystems use the generic grammar.
 
 See [profile design](docs/profile.md), [source statement](docs/provenance.md),
-and the [project proposal](docs/proposal.md).
+the [release verification](docs/release-verification.md), and the
+[project proposal](docs/proposal.md).
 
 ## License
 
