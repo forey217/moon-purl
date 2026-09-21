@@ -112,3 +112,31 @@ pub(all) struct InventoryReport {
   duplicate : Int
   policy_blocked : Int
 } derive(Eq, @debug.Debug)
+
+///|
+pub(all) struct ParseFinding {
+  index : Int
+  input : String
+  canonical : String
+  valid : Bool
+  code : String
+  offset : Int
+} derive(Eq, @debug.Debug)
+
+///|
+pub(all) struct ParseReport {
+  findings : Array[ParseFinding]
+  valid : Int
+  invalid : Int
+} derive(Eq, @debug.Debug)
+
+///|
+/// Identity-level change set between two dependency snapshots. Duplicate rows
+/// collapse to one identity; invalid rows are counted but never compared.
+pub(all) struct InventoryDelta {
+  added : Array[String]
+  removed : Array[String]
+  unchanged : Array[String]
+  invalid_before : Int
+  invalid_after : Int
+} derive(Eq, @debug.Debug)
