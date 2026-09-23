@@ -11,9 +11,9 @@
 
 name = "forey217/moon_purl"
 
-version = "0.1.0"
+version = "0.2.0"
 
-readme = "README.mbt.md"
+readme = "README.md"
 
 repository = "https://github.com/forey217/moon-purl"
 
@@ -23,4 +23,4 @@ keywords = [ "package-url", "purl", "sbom", "supply-chain" ]
 
 preferred_target = "wasm"
 
-description = "Parse, canonicalize, match, and audit Package URLs for MoonBit supply-chain tooling"
+description = "Package URL toolkit with CycloneDX/SPDX import, canonicalization, inventory policy, and cross-format diff"

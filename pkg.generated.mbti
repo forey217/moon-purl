@@ -6,13 +6,23 @@ import {
 }
 
 // Values
+pub fn audit_cyclonedx_json(String, policy? : InventoryPolicy) -> SbomAuditReport raise PurlError
+
 pub fn audit_inventory(Array[InventoryEntry], policy? : InventoryPolicy) -> InventoryReport
+
+pub fn audit_spdx_json(String, policy? : InventoryPolicy) -> SbomAuditReport raise PurlError
 
 pub fn canonicalize(String) -> String raise PurlError
 
 pub fn diagnose_batch(Array[String]) -> ParseReport
 
 pub fn diff_inventory(Array[InventoryEntry], Array[InventoryEntry]) -> InventoryDelta
+
+pub fn diff_sbom_imports(SbomImportReport, SbomImportReport) -> InventoryDelta
+
+pub fn import_cyclonedx_json(String) -> SbomImportReport raise PurlError
+
+pub fn import_spdx_json(String) -> SbomImportReport raise PurlError
 
 pub fn match_purl(PackageUrl, PurlPattern) -> MatchResult
 
@@ -124,6 +134,40 @@ pub fn PurlPattern::any() -> Self
 pub(all) struct Qualifier {
   key : String
   value : String
+} derive(Eq, @debug.Debug)
+
+pub(all) struct SbomAuditReport {
+  import_report : SbomImportReport
+  inventory_report : InventoryReport
+} derive(Eq, @debug.Debug)
+
+pub(all) enum SbomFormat {
+  CycloneDx
+  Spdx
+} derive(Eq, @debug.Debug)
+
+pub(all) enum SbomImportDecision {
+  Imported
+  MissingPurl
+  InvalidPurl
+} derive(Eq, @debug.Debug)
+
+pub(all) struct SbomImportFinding {
+  record_id : String
+  decision : SbomImportDecision
+  input : String
+  canonical : String
+  code : String
+  offset : Int
+} derive(Eq, @debug.Debug)
+
+pub(all) struct SbomImportReport {
+  format : SbomFormat
+  entries : Array[InventoryEntry]
+  findings : Array[SbomImportFinding]
+  imported : Int
+  missing : Int
+  invalid : Int
 } derive(Eq, @debug.Debug)
 
 // Type aliases

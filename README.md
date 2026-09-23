@@ -2,10 +2,11 @@
 
 [![CI](https://github.com/forey217/moon-purl/actions/workflows/ci.yml/badge.svg)](https://github.com/forey217/moon-purl/actions/workflows/ci.yml)
 
-Moon PURL is a pure MoonBit library for parsing, canonicalizing, matching, and
-auditing [Package URLs](https://github.com/package-url/purl-spec). It targets
-SBOM import, vulnerability-database joins, dependency inventory validation, and
-repeatable CI diagnostics.
+Moon PURL is a pure MoonBit supply-chain component for importing CycloneDX and
+SPDX JSON, parsing and canonicalizing [Package URLs](https://github.com/package-url/purl-spec),
+auditing inventories, and comparing identities across SBOM formats. It can be
+embedded directly in SBOM upload gates, format-migration checks, CI inventory
+policy, and vulnerability-database preparation pipelines.
 
 The first release deliberately implements a documented **ASCII interoperability
 profile** rather than claiming every Unicode rule in the full PURL specification.
@@ -15,6 +16,11 @@ and GitHub coordinates.
 ## What it does
 
 - parses PURLs into typed fields with stable error codes and UTF-16 offsets;
+- imports top-level and nested CycloneDX components from JSON;
+- imports SPDX `PACKAGE-MANAGER` PURL external references from JSON;
+- produces a finding for every component/package and isolates bad or missing PURLs;
+- runs inventory policy directly on imported documents;
+- compares CycloneDX and SPDX snapshots through normalized identities;
 - canonicalizes scheme/type, percent escapes, PyPI names, npm names/scopes, and
   sorted qualifier keys;
 - matches explicit type/namespace/name/version fields and qualifier subsets;
@@ -22,7 +28,8 @@ and GitHub coordinates.
 - isolates malformed rows in batch diagnostics;
 - audits inventories for invalid, unversioned, duplicate, and policy-blocked rows;
 - compares two inventories and reports added, removed, and unchanged identities;
-- ships a runnable SBOM scenario, a 20,000-row workload, and four-target CI.
+- ships a runnable CycloneDX integration, 1,500-component JSON test, combined
+  20,000-row/5,000-component workload, and four-target CI.
 
 ## Quick start
 
@@ -43,7 +50,7 @@ test {
 Install the published package from MoonCakes:
 
 ```powershell
-moon add forey217/moon_purl
+moon add forey217/moon_purl@0.2.0
 ```
 
 Run the checked-in scenario and workload from this repository:
@@ -53,11 +60,13 @@ moon run cmd/main --target js
 moon run cmd/benchmark --target js
 ```
 
-The scenario reports one malformed row without aborting the remaining SBOM
-records. The workload has a fixed expected result:
+The runnable example parses an actual CycloneDX JSON document, canonicalizes
+three PURLs, reports one malformed PURL and one component without a PURL, then
+audits the imported inventory. The workload has two fixed result lines:
 
 ```text
 rows=20000 ready=16000 duplicate=2000 invalid=1000 unversioned=1000 blocked=0
+cyclonedx=5000 imported=4500 missing=250 invalid-purl=250 ready=4000 duplicate=500
 ```
 
 ## Inventory audit
@@ -88,14 +97,18 @@ moon check --target js --deny-warn
 moon test --target js --deny-warn
 ```
 
-There are 16 deterministic test blocks, including a 1,200-row integration
-scenario. GitHub Actions checks wasm, wasm-gc, JavaScript, and native targets.
+There are 21 deterministic test blocks, including 1,200-row inventory and
+1,500-component CycloneDX JSON scenarios. GitHub Actions checks wasm, wasm-gc,
+JavaScript, and native targets.
 See [scenario validation](docs/scenario-validation.md) for commands, expected
 counts, timings, environment, and interpretation.
 
 ## Explicit boundaries
 
-- No network access, registry lookup, vulnerability query, or SBOM file parser.
+- No network access, registry lookup, vulnerability query, dependency graph
+  solver, or full CycloneDX/SPDX schema validator.
+- The SBOM adapters intentionally read only identifiers required for PURL
+  inventory work; unrelated document fields remain the caller's responsibility.
 - No claim of full Unicode normalization; non-ASCII text is preserved under the
   documented profile rather than silently rewritten.
 - No claim that matching identities imply the same artifact bytes.

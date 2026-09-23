@@ -1,6 +1,6 @@
 # Supported Package URL profile
 
-Moon PURL 0.1.0 implements an ASCII interoperability profile for Package URL.
+Moon PURL 0.2.0 implements an ASCII interoperability profile for Package URL.
 This page is normative for the release; behavior outside it must not be inferred.
 
 ## Parsing and canonical output
@@ -13,7 +13,7 @@ invalid. Error offsets are zero-based UTF-16 indices into the original string.
 
 Known profiles add these checks:
 
-| Type | 0.1.0 behavior |
+| Type | 0.2.0 behavior |
 | --- | --- |
 | `pypi` | no namespace; name lowercased and runs of `-`, `_`, `.` collapsed to `-` |
 | `npm` | optional single namespace beginning with `@`; scope/name lowercased |
@@ -24,7 +24,18 @@ Known profiles add these checks:
 
 Literal non-ASCII characters and percent escapes above ASCII are preserved. The
 library does not claim Unicode NFC, UTF-8 escape decoding, or equivalence across
-different Unicode spellings in 0.1.0.
+different Unicode spellings in 0.2.0.
+
+## SBOM adapter semantics
+
+`import_cyclonedx_json` walks both top-level and nested `components`. It uses
+`bom-ref`, then `name`, then a deterministic generated identifier, and emits an
+imported, missing-PURL, or invalid-PURL finding for every component.
+
+`import_spdx_json` walks `packages` and selects `externalRefs` whose category is
+`PACKAGE-MANAGER` and type is `purl` or `package-url`. `SPDXID`, package name,
+or a deterministic generated identifier becomes the record ID. The adapters
+are extraction boundaries, not full schema validators.
 
 ## Identity and matching
 
