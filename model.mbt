@@ -140,3 +140,42 @@ pub(all) struct InventoryDelta {
   invalid_before : Int
   invalid_after : Int
 } derive(Eq, @debug.Debug)
+
+///|
+pub(all) enum SbomFormat {
+  CycloneDx
+  Spdx
+} derive(Eq, @debug.Debug)
+
+///|
+pub(all) enum SbomImportDecision {
+  Imported
+  MissingPurl
+  InvalidPurl
+} derive(Eq, @debug.Debug)
+
+///|
+pub(all) struct SbomImportFinding {
+  record_id : String
+  decision : SbomImportDecision
+  input : String
+  canonical : String
+  code : String
+  offset : Int
+} derive(Eq, @debug.Debug)
+
+///|
+pub(all) struct SbomImportReport {
+  format : SbomFormat
+  entries : Array[InventoryEntry]
+  findings : Array[SbomImportFinding]
+  imported : Int
+  missing : Int
+  invalid : Int
+} derive(Eq, @debug.Debug)
+
+///|
+pub(all) struct SbomAuditReport {
+  import_report : SbomImportReport
+  inventory_report : InventoryReport
+} derive(Eq, @debug.Debug)
