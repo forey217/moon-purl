@@ -1,4 +1,14 @@
-# MoonCakes 0.1.0 release verification
+# MoonCakes release verification
+
+## 0.2.0 - 2026-09-23
+
+`moon publish` returned `200 OK`. The public registry reports version 0.2.0 as
+latest, not yanked, with build status `success` and the expected GitHub source.
+An independent module using another MoonCakes profile downloaded
+`forey217/moon_purl@0.2.0`, called `audit_cyclonedx_json`, and verified canonical
+PyPI output on JavaScript and wasm-gc (1/1 tests passed on each target).
+
+## 0.1.0 - 2026-09-21
 
 ## Publication
 
