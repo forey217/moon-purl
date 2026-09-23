@@ -204,3 +204,13 @@ pub fn audit_spdx_json(
   let inventory_report = audit_inventory(import_report.entries, policy~)
   { import_report, inventory_report, }
 }
+
+///|
+/// Compare any two imported SBOM documents through canonical package-version
+/// identities. This supports format migration checks such as CycloneDX to SPDX.
+pub fn diff_sbom_imports(
+  before : SbomImportReport,
+  after : SbomImportReport,
+) -> InventoryDelta {
+  diff_inventory(before.entries, after.entries)
+}

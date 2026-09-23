@@ -51,3 +51,27 @@ test "malformed JSON documents fail with stable document errors" {
   }
   assert_eq(code, "INVALID_JSON")
 }
+
+///|
+test "CycloneDX and SPDX snapshots compare through canonical identities" {
+  let before = import_cyclonedx_json(
+    (
+      #|{"components":[
+      #| {"bom-ref":"a", "purl":"pkg:pypi/Requests@2.32.3"},
+      #| {"bom-ref":"b", "purl":"pkg:npm/lodash@4.17.21"}
+      #|]}
+    ),
+  )
+  let after = import_spdx_json(
+    (
+      #|{"packages":[
+      #| {"SPDXID":"A", "externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceType":"purl","referenceLocator":"pkg:pypi/requests@2.32.3"}]},
+      #| {"SPDXID":"C", "externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceType":"purl","referenceLocator":"pkg:maven/org.example/core@1.0.0"}]}
+      #|]}
+    ),
+  )
+  let delta = diff_sbom_imports(before, after)
+  assert_eq(delta.unchanged, ["pkg:pypi/requests@2.32.3"])
+  assert_eq(delta.removed, ["pkg:npm/lodash@4.17.21"])
+  assert_eq(delta.added, ["pkg:maven/org.example/core@1.0.0"])
+}
