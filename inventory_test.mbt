@@ -1,6 +1,6 @@
 ///|
 test "inventory audit classifies every row" {
-  let report = audit_inventory(
+  let report = @moon_purl.audit_inventory(
     [
       { record_id: "a", purl: "pkg:pypi/Requests@2.32.3", },
       { record_id: "b", purl: "pkg:pypi/requests@2.32.3#src", },
@@ -26,7 +26,7 @@ test "inventory audit classifies every row" {
 
 ///|
 test "required qualifier policy checks key and value" {
-  let report = audit_inventory(
+  let report = @moon_purl.audit_inventory(
     [
       {
         record_id: "ok",

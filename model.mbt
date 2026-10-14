@@ -2,15 +2,27 @@
 /// Stable parser or policy error. Offsets are zero-based UTF-16 positions in
 /// the original input. Error values never echo the input string.
 pub(all) suberror PurlError {
-  Syntax(String, Int)
-  Unsupported(String, Int)
+  Syntax(String, Int32)
+  Unsupported(String, Int32)
 } derive(Eq, @debug.Debug)
+
+///|
+pub extend PurlError with Eq::{equal, not_equal}
+
+///|
+pub extend PurlError with @debug.Debug::{to_repr}
 
 ///|
 pub(all) struct Qualifier {
   key : String
   value : String
 } derive(Eq, @debug.Debug)
+
+///|
+pub extend Qualifier with Eq::{equal, not_equal}
+
+///|
+pub extend Qualifier with @debug.Debug::{to_repr}
 
 ///|
 /// Package URL fields after decoding and profile normalization. Namespace is
@@ -26,6 +38,12 @@ pub(all) struct PackageUrl {
 } derive(Eq, @debug.Debug)
 
 ///|
+pub extend PackageUrl with Eq::{equal, not_equal}
+
+///|
+pub extend PackageUrl with @debug.Debug::{to_repr}
+
+///|
 pub(all) struct PurlPattern {
   package_type : String?
   namespace_parts : Array[String]?
@@ -33,6 +51,12 @@ pub(all) struct PurlPattern {
   version : String?
   qualifiers : Array[Qualifier]
 } derive(Eq, @debug.Debug)
+
+///|
+pub extend PurlPattern with Eq::{equal, not_equal}
+
+///|
+pub extend PurlPattern with @debug.Debug::{to_repr}
 
 ///|
 pub fn PurlPattern::any() -> PurlPattern {
@@ -56,10 +80,22 @@ pub(all) enum MatchResult {
 } derive(Eq, @debug.Debug)
 
 ///|
+pub extend MatchResult with Eq::{equal, not_equal}
+
+///|
+pub extend MatchResult with @debug.Debug::{to_repr}
+
+///|
 pub(all) struct InventoryEntry {
   record_id : String
   purl : String
 } derive(Eq, @debug.Debug)
+
+///|
+pub extend InventoryEntry with Eq::{equal, not_equal}
+
+///|
+pub extend InventoryEntry with @debug.Debug::{to_repr}
 
 ///|
 pub(all) enum InventoryDecision {
@@ -69,6 +105,12 @@ pub(all) enum InventoryDecision {
   Duplicate
   PolicyBlocked
 } derive(Eq, @debug.Debug)
+
+///|
+pub extend InventoryDecision with Eq::{equal, not_equal}
+
+///|
+pub extend InventoryDecision with @debug.Debug::{to_repr}
 
 ///|
 pub fn InventoryDecision::to_string(self : InventoryDecision) -> String {
@@ -88,8 +130,14 @@ pub(all) struct InventoryFinding {
   canonical : String
   decision : InventoryDecision
   code : String
-  offset : Int
+  offset : Int32
 } derive(Eq, @debug.Debug)
+
+///|
+pub extend InventoryFinding with Eq::{equal, not_equal}
+
+///|
+pub extend InventoryFinding with @debug.Debug::{to_repr}
 
 ///|
 pub(all) struct InventoryPolicy {
@@ -99,6 +147,12 @@ pub(all) struct InventoryPolicy {
 } derive(Eq, @debug.Debug)
 
 ///|
+pub extend InventoryPolicy with Eq::{equal, not_equal}
+
+///|
+pub extend InventoryPolicy with @debug.Debug::{to_repr}
+
+///|
 pub fn InventoryPolicy::default() -> InventoryPolicy {
   { require_version: true, blocked_types: [], required_qualifiers: [], }
 }
@@ -106,29 +160,47 @@ pub fn InventoryPolicy::default() -> InventoryPolicy {
 ///|
 pub(all) struct InventoryReport {
   findings : Array[InventoryFinding]
-  ready : Int
-  invalid : Int
-  unversioned : Int
-  duplicate : Int
-  policy_blocked : Int
+  ready : Int32
+  invalid : Int32
+  unversioned : Int32
+  duplicate : Int32
+  policy_blocked : Int32
 } derive(Eq, @debug.Debug)
 
 ///|
+pub extend InventoryReport with Eq::{equal, not_equal}
+
+///|
+pub extend InventoryReport with @debug.Debug::{to_repr}
+
+///|
 pub(all) struct ParseFinding {
-  index : Int
+  index : Int32
   input : String
   canonical : String
   valid : Bool
   code : String
-  offset : Int
+  offset : Int32
 } derive(Eq, @debug.Debug)
+
+///|
+pub extend ParseFinding with Eq::{equal, not_equal}
+
+///|
+pub extend ParseFinding with @debug.Debug::{to_repr}
 
 ///|
 pub(all) struct ParseReport {
   findings : Array[ParseFinding]
-  valid : Int
-  invalid : Int
+  valid : Int32
+  invalid : Int32
 } derive(Eq, @debug.Debug)
+
+///|
+pub extend ParseReport with Eq::{equal, not_equal}
+
+///|
+pub extend ParseReport with @debug.Debug::{to_repr}
 
 ///|
 /// Identity-level change set between two dependency snapshots. Duplicate rows
@@ -137,15 +209,27 @@ pub(all) struct InventoryDelta {
   added : Array[String]
   removed : Array[String]
   unchanged : Array[String]
-  invalid_before : Int
-  invalid_after : Int
+  invalid_before : Int32
+  invalid_after : Int32
 } derive(Eq, @debug.Debug)
+
+///|
+pub extend InventoryDelta with Eq::{equal, not_equal}
+
+///|
+pub extend InventoryDelta with @debug.Debug::{to_repr}
 
 ///|
 pub(all) enum SbomFormat {
   CycloneDx
   Spdx
 } derive(Eq, @debug.Debug)
+
+///|
+pub extend SbomFormat with Eq::{equal, not_equal}
+
+///|
+pub extend SbomFormat with @debug.Debug::{to_repr}
 
 ///|
 pub(all) enum SbomImportDecision {
@@ -155,27 +239,51 @@ pub(all) enum SbomImportDecision {
 } derive(Eq, @debug.Debug)
 
 ///|
+pub extend SbomImportDecision with Eq::{equal, not_equal}
+
+///|
+pub extend SbomImportDecision with @debug.Debug::{to_repr}
+
+///|
 pub(all) struct SbomImportFinding {
   record_id : String
   decision : SbomImportDecision
   input : String
   canonical : String
   code : String
-  offset : Int
+  offset : Int32
 } derive(Eq, @debug.Debug)
+
+///|
+pub extend SbomImportFinding with Eq::{equal, not_equal}
+
+///|
+pub extend SbomImportFinding with @debug.Debug::{to_repr}
 
 ///|
 pub(all) struct SbomImportReport {
   format : SbomFormat
   entries : Array[InventoryEntry]
   findings : Array[SbomImportFinding]
-  imported : Int
-  missing : Int
-  invalid : Int
+  imported : Int32
+  missing : Int32
+  invalid : Int32
 } derive(Eq, @debug.Debug)
+
+///|
+pub extend SbomImportReport with Eq::{equal, not_equal}
+
+///|
+pub extend SbomImportReport with @debug.Debug::{to_repr}
 
 ///|
 pub(all) struct SbomAuditReport {
   import_report : SbomImportReport
   inventory_report : InventoryReport
 } derive(Eq, @debug.Debug)
+
+///|
+pub extend SbomAuditReport with Eq::{equal, not_equal}
+
+///|
+pub extend SbomAuditReport with @debug.Debug::{to_repr}

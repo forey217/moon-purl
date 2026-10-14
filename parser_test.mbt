@@ -1,7 +1,7 @@
 ///|
 fn parse_rejected(input : String) -> Bool {
   try {
-    ignore(parse(input))
+    ignore(@moon_purl.parse(input))
     false
   } catch {
     _ => true
@@ -25,13 +25,13 @@ test "canonical examples from common package ecosystems" {
     ),
   ]
   for (input, expected) in cases {
-    assert_eq(canonicalize(input), expected)
+    assert_eq(@moon_purl.canonicalize(input), expected)
   }
 }
 
 ///|
 test "parser exposes decoded structured fields" {
-  let value = parse(
+  let value = @moon_purl.parse(
     "pkg:maven/org.example/widget@2.0.0?arch=x86_64&repository_url=https:%2F%2Frepo.example#dist/linux",
   )
   assert_eq(value.package_type, "maven")
@@ -45,14 +45,16 @@ test "parser exposes decoded structured fields" {
 ///|
 test "qualifiers are sorted and keys are case-insensitive" {
   assert_eq(
-    canonicalize("pkg:generic/demo@1?Z=last&a=first&M=middle"),
+    @moon_purl.canonicalize("pkg:generic/demo@1?Z=last&a=first&M=middle"),
     "pkg:generic/demo@1?a=first&m=middle&z=last",
   )
 }
 
 ///|
 test "identity omits qualifiers and subpath only" {
-  let value = parse("pkg:generic/acme/widget@1.0?arch=arm64#bin/tool")
+  let value = @moon_purl.parse(
+    "pkg:generic/acme/widget@1.0?arch=arm64#bin/tool",
+  )
   assert_eq(value.identity(), "pkg:generic/acme/widget@1.0")
 }
 
@@ -71,7 +73,7 @@ test "invalid structure is rejected deterministically" {
 ///|
 test "error offsets identify the failing percent escape" {
   let mut observed = -1
-  ignore(parse("pkg:generic/demo@1?source=%Q0")) catch {
+  ignore(@moon_purl.parse("pkg:generic/demo@1?source=%Q0")) catch {
     Syntax(code, offset) => {
       assert_eq(code, "BAD_PERCENT_ESCAPE")
       observed = offset

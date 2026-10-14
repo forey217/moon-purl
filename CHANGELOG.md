@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.1 - 2026-10-14
+
+- Canonicalize GitHub PURL owner and repository casing before identity comparisons.
+- Prevent false added/removed components in casing-only CycloneDX/SPDX migrations.
+- Preserve tag/version casing and the case-sensitive semantics of other types.
+- Add six public API regression tests and align CI compiler/core to one pinned stable version.
+
 ## 0.2.0 - 2026-09-23
 
 - Import top-level and nested CycloneDX JSON components.

@@ -12,7 +12,7 @@ test "CycloneDX import handles nested multi-ecosystem components" {
     #|    {"bom-ref":"unknown"}
     #|  ]
     #|}
-  let report = import_cyclonedx_json(document)
+  let report = @moon_purl.import_cyclonedx_json(document)
   assert_eq(report.imported, 3)
   assert_eq(report.invalid, 1)
   assert_eq(report.missing, 1)
@@ -35,7 +35,7 @@ test "SPDX package-manager references feed inventory policy" {
     #|    ]}
     #|  ]
     #|}
-  let report = audit_spdx_json(document)
+  let report = @moon_purl.audit_spdx_json(document)
   assert_eq(report.import_report.imported, 1)
   assert_eq(report.import_report.missing, 1)
   assert_eq(report.inventory_report.ready, 1)
@@ -45,7 +45,7 @@ test "SPDX package-manager references feed inventory policy" {
 ///|
 test "malformed JSON documents fail with stable document errors" {
   let mut code = ""
-  ignore(import_cyclonedx_json("{broken")) catch {
+  ignore(@moon_purl.import_cyclonedx_json("{broken")) catch {
     Syntax(found, _) => code = found
     _ => ()
   }
@@ -54,7 +54,7 @@ test "malformed JSON documents fail with stable document errors" {
 
 ///|
 test "CycloneDX and SPDX snapshots compare through canonical identities" {
-  let before = import_cyclonedx_json(
+  let before = @moon_purl.import_cyclonedx_json(
     (
       #|{"components":[
       #| {"bom-ref":"a", "purl":"pkg:pypi/Requests@2.32.3"},
@@ -62,7 +62,7 @@ test "CycloneDX and SPDX snapshots compare through canonical identities" {
       #|]}
     ),
   )
-  let after = import_spdx_json(
+  let after = @moon_purl.import_spdx_json(
     (
       #|{"packages":[
       #| {"SPDXID":"A", "externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceType":"purl","referenceLocator":"pkg:pypi/requests@2.32.3"}]},
@@ -70,7 +70,7 @@ test "CycloneDX and SPDX snapshots compare through canonical identities" {
       #|]}
     ),
   )
-  let delta = diff_sbom_imports(before, after)
+  let delta = @moon_purl.diff_sbom_imports(before, after)
   assert_eq(delta.unchanged, ["pkg:pypi/requests@2.32.3"])
   assert_eq(delta.removed, ["pkg:npm/lodash@4.17.21"])
   assert_eq(delta.added, ["pkg:maven/org.example/core@1.0.0"])

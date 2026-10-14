@@ -3,7 +3,7 @@
 /// like an SBOM import. It verifies total accounting, duplicate joins, and
 /// malformed-row isolation without relying on network services or clocks.
 test "SBOM inventory scenario accounts for 1200 rows" {
-  let rows : Array[InventoryEntry] = []
+  let rows : Array[@moon_purl.InventoryEntry] = []
   for i = 0; i < 1000; i = i + 1 {
     rows.push({
       record_id: "component-" + i.to_string(),
@@ -28,7 +28,7 @@ test "SBOM inventory scenario accounts for 1200 rows" {
       purl: "pkg:npm/tool-" + i.to_string(),
     })
   }
-  let report = audit_inventory(rows)
+  let report = @moon_purl.audit_inventory(rows)
   assert_eq(report.findings.length(), 1200)
   assert_eq(report.ready, 1000)
   assert_eq(report.duplicate, 100)

@@ -1,6 +1,6 @@
 ///|
 fn parse_finding_ok(
-  index : Int,
+  index : Int32,
   input : String,
   value : PackageUrl,
 ) -> ParseFinding {
@@ -16,10 +16,10 @@ fn parse_finding_ok(
 
 ///|
 fn parse_finding_error(
-  index : Int,
+  index : Int32,
   input : String,
   code : String,
-  offset : Int,
+  offset : Int32,
 ) -> ParseFinding {
   { index, input, canonical: "", valid: false, code, offset, }
 }
