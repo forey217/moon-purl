@@ -1,6 +1,6 @@
 # Supported Package URL profile
 
-Moon PURL 0.2.0 implements an ASCII interoperability profile for Package URL.
+Moon PURL 0.2.1 implements an ASCII interoperability profile for Package URL.
 This page is normative for the release; behavior outside it must not be inferred.
 
 ## Parsing and canonical output
@@ -13,18 +13,18 @@ invalid. Error offsets are zero-based UTF-16 indices into the original string.
 
 Known profiles add these checks:
 
-| Type | 0.2.0 behavior |
+| Type | 0.2.1 behavior |
 | --- | --- |
 | `pypi` | no namespace; name lowercased and runs of `-`, `_`, `.` collapsed to `-` |
 | `npm` | optional single namespace beginning with `@`; scope/name lowercased |
 | `maven` | namespace required |
 | `golang` | namespace required |
-| `github` | namespace required |
+| `github` | namespace required; owner and repository lowercased; version/tag casing preserved |
 | other valid type | generic grammar only |
 
 Literal non-ASCII characters and percent escapes above ASCII are preserved. The
 library does not claim Unicode NFC, UTF-8 escape decoding, or equivalence across
-different Unicode spellings in 0.2.0.
+different Unicode spellings in 0.2.1.
 
 ## SBOM adapter semantics
 
