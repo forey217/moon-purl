@@ -27,7 +27,7 @@ fn inventory_finding(
   canonical : String,
   decision : InventoryDecision,
   code : String,
-  offset : Int,
+  offset : Int32,
 ) -> InventoryFinding {
   {
     record_id: entry.record_id,
@@ -46,7 +46,7 @@ fn inventory_finding(
 /// result is a join warning rather than proof of byte-identical artifacts.
 pub fn audit_inventory(
   entries : Array[InventoryEntry],
-  policy? : InventoryPolicy = InventoryPolicy::default(),
+  policy~ : InventoryPolicy = InventoryPolicy::default(),
 ) -> InventoryReport {
   let findings : Array[InventoryFinding] = []
   let identities : @hashset.HashSet[String] = @hashset.HashSet([])

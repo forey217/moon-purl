@@ -1,5 +1,5 @@
 ///|
-fn find_first(input : String, needle : Int, start : Int) -> Int {
+fn find_first(input : String, needle : Int32, start : Int32) -> Int32 {
   for i = start; i < input.length(); i = i + 1 {
     if input[i].to_int() == needle {
       return i
@@ -9,7 +9,12 @@ fn find_first(input : String, needle : Int, start : Int) -> Int {
 }
 
 ///|
-fn find_last(input : String, needle : Int, start : Int, end : Int) -> Int {
+fn find_last(
+  input : String,
+  needle : Int32,
+  start : Int32,
+  end : Int32,
+) -> Int32 {
   let mut found = -1
   for i = start; i < end; i = i + 1 {
     if input[i].to_int() == needle {
@@ -20,7 +25,7 @@ fn find_last(input : String, needle : Int, start : Int, end : Int) -> Int {
 }
 
 ///|
-fn validate_type(value : String, offset : Int) -> Unit raise PurlError {
+fn validate_type(value : String, offset : Int32) -> Unit raise PurlError {
   if value.length() == 0 {
     raise Syntax("EMPTY_TYPE", offset)
   }
@@ -37,7 +42,7 @@ fn validate_type(value : String, offset : Int) -> Unit raise PurlError {
 ///|
 fn validate_path_segment(
   value : String,
-  offset : Int,
+  offset : Int32,
   code : String,
 ) -> Unit raise PurlError {
   if value.length() == 0 {
@@ -55,7 +60,10 @@ fn validate_path_segment(
 }
 
 ///|
-fn validate_qualifier_key(value : String, offset : Int) -> Unit raise PurlError {
+fn validate_qualifier_key(
+  value : String,
+  offset : Int32,
+) -> Unit raise PurlError {
   if value.length() == 0 {
     raise Syntax("EMPTY_QUALIFIER_KEY", offset)
   }
@@ -68,7 +76,7 @@ fn validate_qualifier_key(value : String, offset : Int) -> Unit raise PurlError 
 }
 
 ///|
-fn qualifier_index(values : Array[Qualifier], key : String) -> Int {
+fn qualifier_index(values : Array[Qualifier], key : String) -> Int32 {
   for i = 0; i < values.length(); i = i + 1 {
     if values[i].key == key {
       return i
@@ -90,7 +98,7 @@ fn sort_qualifiers(values : Array[Qualifier]) -> Array[Qualifier] {
 ///|
 fn parse_qualifiers(
   raw : String,
-  base : Int,
+  base : Int32,
 ) -> Array[Qualifier] raise PurlError {
   if raw.length() == 0 {
     raise Syntax("EMPTY_QUALIFIERS", base)
@@ -125,7 +133,7 @@ fn parse_qualifiers(
 }
 
 ///|
-fn parse_subpath(raw : String, base : Int) -> Array[String] raise PurlError {
+fn parse_subpath(raw : String, base : Int32) -> Array[String] raise PurlError {
   if raw.length() == 0 {
     raise Syntax("EMPTY_SUBPATH", base)
   }
@@ -165,7 +173,16 @@ fn normalize_profile(value : PackageUrl) -> PackageUrl raise PurlError {
         namespace_parts = [ascii_lower(namespace_parts[0])]
       }
     }
-    "maven" | "golang" | "github" =>
+    "github" => {
+      if namespace_parts.length() == 0 {
+        raise Unsupported("NAMESPACE_REQUIRED", 4)
+      }
+      // The GitHub PURL type requires lowercase owner and repository names.
+      // Tags and other version values retain their original spelling.
+      namespace_parts = namespace_parts.map(ascii_lower)
+      name = ascii_lower(name)
+    }
+    "maven" | "golang" =>
       if namespace_parts.length() == 0 {
         raise Unsupported("NAMESPACE_REQUIRED", 4)
       }

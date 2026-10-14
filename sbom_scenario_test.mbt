@@ -35,7 +35,7 @@ test "CycloneDX JSON scenario imports and audits 1500 components" {
     }
   }
   output.write_string("]}")
-  let result = audit_cyclonedx_json(output.to_string())
+  let result = @moon_purl.audit_cyclonedx_json(output.to_string())
   assert_eq(result.import_report.findings.length(), 1500)
   assert_eq(result.import_report.imported, 1300)
   assert_eq(result.import_report.invalid, 100)

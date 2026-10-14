@@ -13,7 +13,7 @@ fn sbom_finding(
   input : String,
   canonical : String,
   code : String,
-  offset : Int,
+  offset : Int32,
 ) -> SbomImportFinding {
   { record_id, decision, input, canonical, code, offset, }
 }
@@ -187,7 +187,7 @@ pub fn import_spdx_json(input : String) -> SbomImportReport raise PurlError {
 /// Import and apply inventory policy in one downstream-facing operation.
 pub fn audit_cyclonedx_json(
   input : String,
-  policy? : InventoryPolicy = InventoryPolicy::default(),
+  policy~ : InventoryPolicy = InventoryPolicy::default(),
 ) -> SbomAuditReport raise PurlError {
   let import_report = import_cyclonedx_json(input)
   let inventory_report = audit_inventory(import_report.entries, policy~)
@@ -198,7 +198,7 @@ pub fn audit_cyclonedx_json(
 /// Import and apply inventory policy in one downstream-facing operation.
 pub fn audit_spdx_json(
   input : String,
-  policy? : InventoryPolicy = InventoryPolicy::default(),
+  policy~ : InventoryPolicy = InventoryPolicy::default(),
 ) -> SbomAuditReport raise PurlError {
   let import_report = import_spdx_json(input)
   let inventory_report = audit_inventory(import_report.entries, policy~)

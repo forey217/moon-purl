@@ -1,5 +1,8 @@
 # Moon PURL
 
+Version 0.2.1 is tested with MoonBit `0.10.15+943464bfa` and its matching core.
+Use that stable toolchain or a newer compatible version.
+
 [![CI](https://github.com/forey217/moon-purl/actions/workflows/ci.yml/badge.svg)](https://github.com/forey217/moon-purl/actions/workflows/ci.yml)
 
 Moon PURL is a pure MoonBit supply-chain component for importing CycloneDX and
@@ -50,7 +53,7 @@ test {
 Install the published package from MoonCakes:
 
 ```powershell
-moon add forey217/moon_purl@0.2.0
+moon add forey217/moon_purl@0.2.1
 ```
 
 Run the checked-in scenario and workload from this repository:
@@ -97,11 +100,12 @@ moon check --target js --deny-warn
 moon test --target js --deny-warn
 ```
 
-There are 21 deterministic test blocks, including 1,200-row inventory and
-1,500-component CycloneDX JSON scenarios. GitHub Actions checks wasm, wasm-gc,
-JavaScript, and native targets.
-See [scenario validation](docs/scenario-validation.md) for commands, expected
-counts, timings, environment, and interpretation.
+There are 27 deterministic test blocks, including GitHub casing-only migration
+regressions, 1,200-row inventory and 1,500-component CycloneDX JSON scenarios.
+GitHub Actions checks wasm, wasm-gc, JavaScript, and native targets.
+See [scenario validation](docs/scenario-validation.md) for the original workload
+baseline and [GitHub migration regression](docs/github-migration-regression.md)
+for the 0.2.1 correction.
 
 ## Explicit boundaries
 

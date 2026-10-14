@@ -13,7 +13,9 @@ fn sorted_unique(values : Array[String]) -> Array[String] {
 }
 
 ///|
-fn snapshot_identities(entries : Array[InventoryEntry]) -> (Array[String], Int) {
+fn snapshot_identities(
+  entries : Array[InventoryEntry],
+) -> (Array[String], Int32) {
   let identities : Array[String] = []
   let mut invalid = 0
   for entry in entries {

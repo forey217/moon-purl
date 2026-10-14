@@ -37,6 +37,9 @@ pub(all) suberror PurlError {
   Syntax(String, Int)
   Unsupported(String, Int)
 } derive(Eq, @debug.Debug)
+pub fn PurlError::equal(Self, Self) -> Bool
+pub fn PurlError::not_equal(Self, Self) -> Bool
+pub fn PurlError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub(all) enum InventoryDecision {
@@ -46,6 +49,9 @@ pub(all) enum InventoryDecision {
   Duplicate
   PolicyBlocked
 } derive(Eq, @debug.Debug)
+pub fn InventoryDecision::equal(Self, Self) -> Bool
+pub fn InventoryDecision::not_equal(Self, Self) -> Bool
+pub fn InventoryDecision::to_repr(Self) -> @debug.Repr
 pub fn InventoryDecision::to_string(Self) -> String
 
 pub(all) struct InventoryDelta {
@@ -55,11 +61,17 @@ pub(all) struct InventoryDelta {
   invalid_before : Int
   invalid_after : Int
 } derive(Eq, @debug.Debug)
+pub fn InventoryDelta::equal(Self, Self) -> Bool
+pub fn InventoryDelta::not_equal(Self, Self) -> Bool
+pub fn InventoryDelta::to_repr(Self) -> @debug.Repr
 
 pub(all) struct InventoryEntry {
   record_id : String
   purl : String
 } derive(Eq, @debug.Debug)
+pub fn InventoryEntry::equal(Self, Self) -> Bool
+pub fn InventoryEntry::not_equal(Self, Self) -> Bool
+pub fn InventoryEntry::to_repr(Self) -> @debug.Repr
 
 pub(all) struct InventoryFinding {
   record_id : String
@@ -69,6 +81,9 @@ pub(all) struct InventoryFinding {
   code : String
   offset : Int
 } derive(Eq, @debug.Debug)
+pub fn InventoryFinding::equal(Self, Self) -> Bool
+pub fn InventoryFinding::not_equal(Self, Self) -> Bool
+pub fn InventoryFinding::to_repr(Self) -> @debug.Repr
 
 pub(all) struct InventoryPolicy {
   require_version : Bool
@@ -76,6 +91,9 @@ pub(all) struct InventoryPolicy {
   required_qualifiers : Array[Qualifier]
 } derive(Eq, @debug.Debug)
 pub fn InventoryPolicy::default() -> Self
+pub fn InventoryPolicy::equal(Self, Self) -> Bool
+pub fn InventoryPolicy::not_equal(Self, Self) -> Bool
+pub fn InventoryPolicy::to_repr(Self) -> @debug.Repr
 
 pub(all) struct InventoryReport {
   findings : Array[InventoryFinding]
@@ -85,6 +103,9 @@ pub(all) struct InventoryReport {
   duplicate : Int
   policy_blocked : Int
 } derive(Eq, @debug.Debug)
+pub fn InventoryReport::equal(Self, Self) -> Bool
+pub fn InventoryReport::not_equal(Self, Self) -> Bool
+pub fn InventoryReport::to_repr(Self) -> @debug.Repr
 
 pub(all) enum MatchResult {
   Match
@@ -94,6 +115,9 @@ pub(all) enum MatchResult {
   VersionMismatch
   QualifierMismatch(String)
 } derive(Eq, @debug.Debug)
+pub fn MatchResult::equal(Self, Self) -> Bool
+pub fn MatchResult::not_equal(Self, Self) -> Bool
+pub fn MatchResult::to_repr(Self) -> @debug.Repr
 
 pub(all) struct PackageUrl {
   package_type : String
@@ -103,8 +127,11 @@ pub(all) struct PackageUrl {
   qualifiers : Array[Qualifier]
   subpath : Array[String]
 } derive(Eq, @debug.Debug)
+pub fn PackageUrl::equal(Self, Self) -> Bool
 pub fn PackageUrl::identity(Self) -> String
+pub fn PackageUrl::not_equal(Self, Self) -> Bool
 pub fn PackageUrl::qualifier(Self, String) -> String?
+pub fn PackageUrl::to_repr(Self) -> @debug.Repr
 pub fn PackageUrl::to_string(Self) -> String
 
 pub(all) struct ParseFinding {
@@ -115,12 +142,18 @@ pub(all) struct ParseFinding {
   code : String
   offset : Int
 } derive(Eq, @debug.Debug)
+pub fn ParseFinding::equal(Self, Self) -> Bool
+pub fn ParseFinding::not_equal(Self, Self) -> Bool
+pub fn ParseFinding::to_repr(Self) -> @debug.Repr
 
 pub(all) struct ParseReport {
   findings : Array[ParseFinding]
   valid : Int
   invalid : Int
 } derive(Eq, @debug.Debug)
+pub fn ParseReport::equal(Self, Self) -> Bool
+pub fn ParseReport::not_equal(Self, Self) -> Bool
+pub fn ParseReport::to_repr(Self) -> @debug.Repr
 
 pub(all) struct PurlPattern {
   package_type : String?
@@ -130,27 +163,42 @@ pub(all) struct PurlPattern {
   qualifiers : Array[Qualifier]
 } derive(Eq, @debug.Debug)
 pub fn PurlPattern::any() -> Self
+pub fn PurlPattern::equal(Self, Self) -> Bool
+pub fn PurlPattern::not_equal(Self, Self) -> Bool
+pub fn PurlPattern::to_repr(Self) -> @debug.Repr
 
 pub(all) struct Qualifier {
   key : String
   value : String
 } derive(Eq, @debug.Debug)
+pub fn Qualifier::equal(Self, Self) -> Bool
+pub fn Qualifier::not_equal(Self, Self) -> Bool
+pub fn Qualifier::to_repr(Self) -> @debug.Repr
 
 pub(all) struct SbomAuditReport {
   import_report : SbomImportReport
   inventory_report : InventoryReport
 } derive(Eq, @debug.Debug)
+pub fn SbomAuditReport::equal(Self, Self) -> Bool
+pub fn SbomAuditReport::not_equal(Self, Self) -> Bool
+pub fn SbomAuditReport::to_repr(Self) -> @debug.Repr
 
 pub(all) enum SbomFormat {
   CycloneDx
   Spdx
 } derive(Eq, @debug.Debug)
+pub fn SbomFormat::equal(Self, Self) -> Bool
+pub fn SbomFormat::not_equal(Self, Self) -> Bool
+pub fn SbomFormat::to_repr(Self) -> @debug.Repr
 
 pub(all) enum SbomImportDecision {
   Imported
   MissingPurl
   InvalidPurl
 } derive(Eq, @debug.Debug)
+pub fn SbomImportDecision::equal(Self, Self) -> Bool
+pub fn SbomImportDecision::not_equal(Self, Self) -> Bool
+pub fn SbomImportDecision::to_repr(Self) -> @debug.Repr
 
 pub(all) struct SbomImportFinding {
   record_id : String
@@ -160,6 +208,9 @@ pub(all) struct SbomImportFinding {
   code : String
   offset : Int
 } derive(Eq, @debug.Debug)
+pub fn SbomImportFinding::equal(Self, Self) -> Bool
+pub fn SbomImportFinding::not_equal(Self, Self) -> Bool
+pub fn SbomImportFinding::to_repr(Self) -> @debug.Repr
 
 pub(all) struct SbomImportReport {
   format : SbomFormat
@@ -169,6 +220,9 @@ pub(all) struct SbomImportReport {
   missing : Int
   invalid : Int
 } derive(Eq, @debug.Debug)
+pub fn SbomImportReport::equal(Self, Self) -> Bool
+pub fn SbomImportReport::not_equal(Self, Self) -> Bool
+pub fn SbomImportReport::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 
